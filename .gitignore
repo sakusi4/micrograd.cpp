@@ -1,0 +1,17 @@
+# Binaries & build artifacts
+out
+hello
+test_*
+*.o
+*.dSYM/
+
+# OS / Editor
+.DS_Store
+.vscode/
+
+# Graphviz
+*.dot
+*.svg
+
+# Backups
+backup*.cpp
