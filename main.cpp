@@ -27,7 +27,7 @@ public:
     Value operator+(const Value& other) const {
         Value ret = Value(this->node->value + other.node->value, {this->node, other.node});
 
-        ret.node->_backward = [ret_node = ret.node, this_node = this->node, other_node = other.node]() {
+        ret.node->_backward = [ret_node = ret.node.get(), this_node = this->node, other_node = other.node]() {
             this_node->grad += ret_node->grad;
             other_node->grad += ret_node->grad;
         };
@@ -38,7 +38,7 @@ public:
     Value operator-(const Value& other) const {
         Value ret = Value(this->node->value - other.node->value, {this->node, other.node});
 
-        ret.node->_backward = [ret_node = ret.node, this_node = this->node, other_node = other.node]() {
+        ret.node->_backward = [ret_node = ret.node.get(), this_node = this->node, other_node = other.node]() {
             this_node->grad += ret_node->grad;
             other_node->grad -= ret_node->grad;
         };
@@ -49,7 +49,7 @@ public:
     Value operator*(const Value& other) const {
         Value ret = Value(this->node->value * other.node->value, {this->node, other.node});
 
-        ret.node->_backward = [ret_node = ret.node, this_node = this->node, other_node = other.node]() {
+        ret.node->_backward = [ret_node = ret.node.get(), this_node = this->node, other_node = other.node]() {
             this_node->grad += other_node->value * ret_node->grad;
             other_node->grad += this_node->value * ret_node->grad;
         };
@@ -60,7 +60,7 @@ public:
     Value relu() const {
         Value ret = Value(std::max(0.0, this->node->value), {this->node});
 
-        ret.node->_backward = [ret_node = ret.node, this_node = this->node]() {
+        ret.node->_backward = [ret_node = ret.node.get(), this_node = this->node]() {
             if (this_node->value > 0) {
                 this_node->grad += ret_node->grad;
             }
